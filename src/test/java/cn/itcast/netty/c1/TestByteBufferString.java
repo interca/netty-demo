@@ -22,5 +22,8 @@ public class TestByteBufferString {
         CharBuffer buffer3 = StandardCharsets.UTF_8.decode(buffer1);
         System.out.println(buffer3.getClass());
         System.out.println(buffer3.toString());
+        int a = 10;
+        int b = a ++ + ++ a +  a--;
+        System.out.println(b);
     }
 }
