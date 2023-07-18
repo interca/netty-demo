@@ -23,9 +23,13 @@ public class Server {
                 // 把这条完整消息存入新的 ByteBuffer
                 ByteBuffer target = ByteBuffer.allocate(length);
                 // 从 source 读，向 target 写
+                String s  = "";
                 for (int j = 0; j < length; j++) {
-                    target.put(source.get());
+                    byte b = source.get();
+                    s += (char)b;
+                    target.put(b);
                 }
+                System.out.println(s);
                 debugAll(target);
             }
         }
