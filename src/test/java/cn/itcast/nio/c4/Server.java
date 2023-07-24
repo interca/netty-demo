@@ -1,5 +1,6 @@
-package cn.itcast.netty.c4;
+package cn.itcast.nio.c4;
 
+import cn.itcast.nio.c1.ByteBufferUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -9,8 +10,6 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 import java.util.List;
-
-import static cn.itcast.netty.c1.ByteBufferUtil.debugRead;
 
 @Slf4j
 public class Server {
@@ -38,7 +37,7 @@ public class Server {
                     log.debug("before read... {}", channel);
                     channel.read(buffer); // 阻塞方法，线程停止运行
                     buffer.flip();
-                    debugRead(buffer);
+                    ByteBufferUtil.debugRead(buffer);
                     buffer.clear();
                     log.debug("after read...{}", channel);
                 }
