@@ -3,6 +3,8 @@ package cn.itcast.netty.c4;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
+
+
 import static io.netty.buffer.ByteBufUtil.appendPrettyHexDump;
 import static io.netty.util.internal.StringUtil.NEWLINE;
 
@@ -16,8 +18,16 @@ public class ByteBufferTest {
         byteBuf.writeBytes(sb.toString().getBytes());
         log(byteBuf);
         System.out.println(byteBuf.readerIndex(1));
+        test1();
     }
-    private static void log(ByteBuf buffer) {
+
+
+   static void  test1(){
+        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer();
+        byteBuf.writeInt(14);
+        log(byteBuf);
+    }
+   public static void log(ByteBuf buffer) {
         int length = buffer.readableBytes();
         int rows = length / 16 + (length % 15 == 0 ? 0 : 1) + 4;
         StringBuilder buf = new StringBuilder(rows * 80 * 2)
