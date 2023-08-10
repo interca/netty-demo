@@ -14,12 +14,17 @@ import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.LinkedList;
-import java.util.Random;
+public class ShortConnectClient {
+    static final Logger log = LoggerFactory.getLogger(ShortConnectClient.class);
 
-public class LineClient {
-    static final Logger log = LoggerFactory.getLogger(LineClient.class);
     public static void main(String[] args) {
+        // 分 10 次发送
+        for (int i = 0; i < 10; i++) {
+            send();
+        }
+    }
+
+    private static void send() {
         NioEventLoopGroup worker = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap();
@@ -28,30 +33,22 @@ public class LineClient {
             bootstrap.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    log.debug("connetted...");
+                    log.debug("conneted...");
                     ch.pipeline().addLast(new LoggingHandler(LogLevel.DEBUG));
                     ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
                         @Override
                         public void channelActive(ChannelHandlerContext ctx) throws Exception {
                             log.debug("sending...");
-                            char c = '0';
                             ByteBuf buffer = ctx.alloc().buffer();
-                            Random r = new Random();
-                            for (int i = 0; i < 10; i++) {
-                                StringBuilder stringBuilder = new StringBuilder();
-                                for (int j = 1; j <= r.nextInt(256); j++) {
-                                    stringBuilder.append(c);
-                                }
-                                stringBuilder.append("\n");
-                                c++;
-                                buffer.writeBytes(stringBuilder.toString().getBytes());
-                            }
+                            buffer.writeBytes(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16,17,18});
                             ctx.writeAndFlush(buffer);
+                            // 发完即关
+                            ctx.close();
                         }
                     });
                 }
             });
-            ChannelFuture channelFuture = bootstrap.connect("127.0.0.1", 8080).sync();
+            ChannelFuture channelFuture = bootstrap.connect("localhost", 8080).sync();
             channelFuture.channel().closeFuture().sync();
 
         } catch (InterruptedException e) {
