@@ -15,8 +15,15 @@ import java.util.List;
 @Slf4j
 public class MessageCodec extends ByteToMessageCodec<Message> {
 
+    /**
+     * 编码
+     * @param ctx
+     * @param msg
+     * @param out
+     * @throws Exception
+     */
     @Override
-    protected void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
+    public void encode(ChannelHandlerContext ctx, Message msg, ByteBuf out) throws Exception {
         // 1. 4 字节的魔数
         out.writeBytes(new byte[]{1, 2, 3, 4});
         // 2. 1 字节的版本,
@@ -40,9 +47,20 @@ public class MessageCodec extends ByteToMessageCodec<Message> {
         out.writeBytes(bytes);
     }
 
+
+    /**
+     * 解码
+     * @param ctx
+     * @param in
+     * @param out
+     * @throws Exception
+     */
+
     @Override
-    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+   public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+        //魔术
         int magicNum = in.readInt();
+        //版本
         byte version = in.readByte();
         byte serializerType = in.readByte();
         byte messageType = in.readByte();
