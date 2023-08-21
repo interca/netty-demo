@@ -28,10 +28,7 @@ public class ChatClient {
 
 
     public static void main(String[] args) {
-
         final NioEventLoopGroup group = new NioEventLoopGroup();
-
-
         MessageCodecSharable MESSAGE_CODEC = new MessageCodecSharable();
         LoggingHandler LOGGING_HANDLER = new LoggingHandler(LogLevel.DEBUG);
 
@@ -49,7 +46,7 @@ public class ChatClient {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ch.pipeline().addLast(new ProcotolFrameDecoder());
-//                    ch.pipeline().addLast(LOGGING_HANDLER);
+                    //ch.pipeline().addLast(LOGGING_HANDLER);
                     ch.pipeline().addLast(MESSAGE_CODEC);
 
                     // 用来判断 是不是读 空闲时间过长，或写空闲时间过长 (读，写，读写空闲时间限制) 0表示不关心
@@ -82,6 +79,13 @@ public class ChatClient {
                      */
                     ch.pipeline().addLast("ChatClient handler", new ChannelInboundHandlerAdapter(){
                         // ###################### [ 3 ] ######################
+
+                        /**
+                         * 接受消息
+                         * @param ctx
+                         * @param msg
+                         * @throws Exception
+                         */
                         @Override
                         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
@@ -115,6 +119,7 @@ public class ChatClient {
                                 // ###################### [ 2 ] ######################
                                 log.debug("等待后续操作......");
                                 try {
+                                    //直到计数减为0
                                     WAIT_FOR_LOGIN.await(); // 【 阻塞住，等 channelRead响应回来时 继续运行 】
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
