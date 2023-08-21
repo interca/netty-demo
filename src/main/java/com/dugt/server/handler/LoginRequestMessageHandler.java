@@ -9,6 +9,9 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+/**
+ * 登陆
+ */
 @ChannelHandler.Sharable // 没有共享变量、没有状态信息
 public class LoginRequestMessageHandler extends SimpleChannelInboundHandler<LoginRequestMessage> {
     @Override
