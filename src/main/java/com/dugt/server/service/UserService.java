@@ -1,4 +1,4 @@
-package com.dugt.service;
+package com.dugt.server.service;
 
 /**
  * 用户管理接口

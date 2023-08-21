@@ -1,4 +1,4 @@
-package com.dugt.service;
+package com.dugt.server.service;
 
 public abstract class UserServiceFactory {
     private static UserService userService = new UserServiceMemoryImpl();

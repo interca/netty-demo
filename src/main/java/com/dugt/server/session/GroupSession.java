@@ -1,4 +1,4 @@
-package com.dugt.session;
+package com.dugt.server.session;
 
 import io.netty.channel.Channel;
 

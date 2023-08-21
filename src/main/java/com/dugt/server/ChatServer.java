@@ -2,9 +2,9 @@ package com.dugt.server;
 
 import com.dugt.message.LoginRequestMessage;
 import com.dugt.message.LoginResponseMessage;
-import com.dugt.service.UserServiceFactory;
-import com.dugt.util.MessageCodec;
+import com.dugt.server.service.UserServiceFactory;
 import com.dugt.util.MessageCodecSharable;
+import com.dugt.util.ProcotolFrameDecoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -33,11 +33,9 @@ public class ChatServer {
             serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    //ch.pipeline().addLast(new ProcotolFrameDecoder());
+                    ch.pipeline().addLast(new ProcotolFrameDecoder());
                     ch.pipeline().addLast(LOGGING_HANDLER);
                     ch.pipeline().addLast(MESSAGE_CODEC);
-                    ch.pipeline().addLast( new LengthFieldBasedFrameDecoder(
-                            1024, 12, 4, 0, 0));
                     ch.pipeline().addLast(new SimpleChannelInboundHandler<LoginRequestMessage>() {
                         @Override
                         protected void channelRead0(ChannelHandlerContext ctx, LoginRequestMessage msg) throws Exception {

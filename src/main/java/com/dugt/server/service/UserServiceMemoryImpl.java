@@ -1,4 +1,4 @@
-package com.dugt.service;
+package com.dugt.server.service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
