@@ -39,8 +39,8 @@ public class ChatServer {
         final GroupCreateRequestMessageHandler GROUP_CREATE_HANDLER = new GroupCreateRequestMessageHandler();//--创建群聊---处理器
         final GroupChatRequestMessageHandler GROUP_CHAT_HANDLER = new GroupChatRequestMessageHandler();      //--群聊---处理器
         final QuitHandler QUIT_HANDLER = new QuitHandler();  //--断开连接---处理器
-
-
+        final GroupListMemberHandler GROUP_Member_HANDLER = new GroupListMemberHandler();
+        final GroupJoinHandler GROUP_JOIN = new GroupJoinHandler();
         try {
             final ServerBootstrap bs = new ServerBootstrap();
             bs.channel(NioServerSocketChannel.class);
@@ -82,8 +82,8 @@ public class ChatServer {
                     ch.pipeline().addLast(CHAT_HANDLER);          //--单聊---处理器
                     ch.pipeline().addLast(GROUP_CREATE_HANDLER);  //--创建群聊---处理器
                     ch.pipeline().addLast(GROUP_CHAT_HANDLER);    //--群聊---处理器
-
-
+                    ch.pipeline().addLast(GROUP_Member_HANDLER); //列出群的所有成员
+                    ch.pipeline().addLast(GROUP_JOIN);  //加入群聊
                 }
             });
 
