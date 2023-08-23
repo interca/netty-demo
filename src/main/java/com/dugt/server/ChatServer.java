@@ -49,6 +49,13 @@ public class ChatServer {
 
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
+                    ch.pipeline().addLast(QUIT_HANDLER);               //--断开连接---处理器
+
+                    ch.pipeline().addLast(new ProcotolFrameDecoder()); // 帧解码器 【与自定义编解码器 MessageCodecSharable一起配置参数】
+                    ch.pipeline().addLast(LOGGING_HANDLER);            // 日志
+                    ch.pipeline().addLast(MESSAGE_CODEC);              // 出站入站的 自定义编解码器 【 解析消息类型 】
+
+
                     // 用来判断 是不是读 空闲时间过长，或写空闲时间过长 (读，写，读写空闲时间限制) 0表示不关心
                     ch.pipeline().addLast(new IdleStateHandler(12, 0, 0));
                     /*
@@ -71,12 +78,6 @@ public class ChatServer {
                             }
                         }
                     });
-
-                    ch.pipeline().addLast(QUIT_HANDLER);               //--断开连接---处理器
-
-                    ch.pipeline().addLast(new ProcotolFrameDecoder()); // 帧解码器 【与自定义编解码器 MessageCodecSharable一起配置参数】
-                    ch.pipeline().addLast(LOGGING_HANDLER);            // 日志
-                    ch.pipeline().addLast(MESSAGE_CODEC);              // 出站入站的 自定义编解码器 【 解析消息类型 】
                     // simple处理器 【针对性的对登录进行处理】 【流水线 会向上执行出站Handler,  到 ProcotolFrameDecoder(入站停止)】
                     ch.pipeline().addLast(LOGIN_HANDLER);         //--登录---处理器
                     ch.pipeline().addLast(CHAT_HANDLER);          //--单聊---处理器

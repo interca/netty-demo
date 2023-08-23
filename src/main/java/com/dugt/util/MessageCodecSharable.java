@@ -40,10 +40,7 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         // 无意义，对齐填充
         out.writeByte(0xff);
         // 6. 获取内容的字节数组
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(bos);
-        oos.writeObject(message);
-        byte[] bytes = bos.toByteArray();
+        byte[] bytes = SerializerAlgorithm.Java.serialize(message);
         // 7. 长度
         out.writeInt(bytes.length);
         // 8. 写入内容
@@ -61,7 +58,6 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
      */
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf in, List<Object> list) throws Exception {
-
         //魔术
         int magicNum = in.readInt();
         //版本
@@ -73,8 +69,7 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         int length = in.readInt();
         byte[] bytes = new byte[length];
         in.readBytes(bytes, 0, length);
-        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(bytes));
-        Message message = (Message) ois.readObject();
+        Message message = SerializerAlgorithm.Java.deserialize(Message.class, bytes);
         log.debug("{}, {}, {}, {}, {}, {}", magicNum, version, serializerType, messageType, sequenceId, length);
         log.debug("{}", message);
         list.add(message);
