@@ -26,9 +26,11 @@ enum SerializerAlgorithm implements Serializer {
         @Override
         public <T> byte[] serialize(T object) {
             try {
-                ByteArrayOutputStream out = new ByteArrayOutputStream();
-                new ObjectOutputStream(out).writeObject(object);
-                return out.toByteArray();
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(bos);
+                oos.writeObject(object);
+                byte[] bytes = bos.toByteArray();
+                return bytes;
             } catch (IOException e) {
                 throw new RuntimeException("SerializerAlgorithm.Java 序列化错误", e);
             }
@@ -38,12 +40,15 @@ enum SerializerAlgorithm implements Serializer {
     Json {
         @Override
         public <T> T deserialize(Class<T> clazz, byte[] bytes) {
-            return new Gson().fromJson(new String(bytes, StandardCharsets.UTF_8), clazz);
+            T t = new Gson().fromJson(new String(bytes, StandardCharsets.UTF_8), clazz);
+            return t;
         }
 
         @Override
         public <T> byte[] serialize(T object) {
-            return new Gson().toJson(object).getBytes(StandardCharsets.UTF_8);
+            String s = new Gson().toJson(object);
+            byte[] bytes = s.getBytes(StandardCharsets.UTF_8);
+            return bytes;
         }
     };
 

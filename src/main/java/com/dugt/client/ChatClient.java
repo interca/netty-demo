@@ -50,7 +50,7 @@ public class ChatClient {
                     ch.pipeline().addLast(MESSAGE_CODEC);
 
                     // 用来判断 是不是读 空闲时间过长，或写空闲时间过长 (读，写，读写空闲时间限制) 0表示不关心
-                    ch.pipeline().addLast(new IdleStateHandler(0, 3, 0));
+                    ch.pipeline().addLast(new IdleStateHandler(0, 8, 0));
                     /*
                     ################################################################
                     ###### ChannelDuplexHandler 可以同时作为 入站 和 出站处理器  #######
@@ -66,7 +66,7 @@ public class ChatClient {
                             IdleStateEvent event = (IdleStateEvent) evt;
                             // 是否 读超时
                             if (event.state() == IdleState.WRITER_IDLE) {
-                                 log.debug(" 3秒 没写数据了 ，发送心跳包 ===================");
+                                 //log.debug(" 3秒 没写数据了 ，发送心跳包 ===================");
                                 ctx.writeAndFlush(new PingMessage());
                             }
                         }
