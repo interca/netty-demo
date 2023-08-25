@@ -1,4 +1,4 @@
-package com.dugt.rpc.service;
+package com.dugt.rpc.server.service;
 
 
 
@@ -21,7 +21,9 @@ public class ServiceFactory {
             Set<String> names = properties.stringPropertyNames();
             for (String name : names) {
                 if (name.endsWith("Service")) {
+                    //获取接口对象
                     Class<?> interfaceClass = Class.forName(name);
+                    //获取对应实现类对象
                     Class<?> instanceClass = Class.forName(properties.getProperty(name));
                     map.put(interfaceClass, instanceClass.newInstance());
                 }

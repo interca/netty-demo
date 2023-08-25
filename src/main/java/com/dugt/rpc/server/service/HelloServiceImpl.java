@@ -1,4 +1,4 @@
-package com.dugt.rpc.service;
+package com.dugt.rpc.server.service;
 
 public class HelloServiceImpl implements HelloService {
     @Override

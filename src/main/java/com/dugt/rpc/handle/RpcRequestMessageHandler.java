@@ -1,9 +1,9 @@
 package com.dugt.rpc.handle;
 
-import com.rpc.message.RpcRequestMessage;
-import com.rpc.message.RpcResponseMessage;
-import com.rpc.server.service.HelloService;
-import com.rpc.server.service.ServiceFactory;
+import com.dugt.rpc.message.RpcRequestMessage;
+import com.dugt.rpc.message.RpcResponseMessage;
+import com.dugt.rpc.server.service.HelloService;
+import com.dugt.rpc.server.service.ServiceFactory;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -49,7 +49,7 @@ public class RpcRequestMessageHandler extends SimpleChannelInboundHandler<RpcReq
 
         final RpcRequestMessage requestMsg = new RpcRequestMessage(
                         1,
-                "com.rpc.server.service.HelloService",
+                "com.dugt.rpc.server.service.HelloService",
                 "sayHello",
                 String.class,
                 new Class[]{String.class},
@@ -62,7 +62,7 @@ public class RpcRequestMessageHandler extends SimpleChannelInboundHandler<RpcReq
         // 根据 方法名和参数类型 确定 【具体方法】
         final Method method = service.getClass().getMethod(requestMsg.getMethodName(), requestMsg.getParameterTypes());
         // 根据 具体方法 使用代理 【执行方法】
-        final Object invoke = method.invoke(service, requestMsg.getParameterValue());
+        final Object invoke = method.invoke( service,requestMsg.getParameterValue());
         System.out.println(invoke);
 
 
