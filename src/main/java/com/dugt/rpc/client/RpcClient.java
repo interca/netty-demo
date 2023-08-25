@@ -32,7 +32,7 @@ public class RpcClient {
             bootstrap.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(new ProcotolFrameDecoder()); // 【使用 asm包方法】
+                    ch.pipeline().addLast(new ProcotolFrameDecoder()); //
                     ch.pipeline().addLast(LOGGING_HANDLER);
                     ch.pipeline().addLast(MESSAGE_CODEC);
                     ch.pipeline().addLast(RPC_RESPONSE_HANDLER);
@@ -43,7 +43,7 @@ public class RpcClient {
             final ChannelFuture future = channel.writeAndFlush(
                     new RpcRequestMessage(
                             1,
-                            "com.rpc.server.service.HelloService",
+                            "com.dugt.rpc.server.service.HelloService",
                             "sayHello",
                             String.class,
                             new Class[]{String.class},

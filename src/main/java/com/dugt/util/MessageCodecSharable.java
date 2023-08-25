@@ -32,7 +32,7 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         // 2. 1 字节的版本,
         out.writeByte(1);
         // 3. 1 字节的序列化方式 jdk 0 , json 1
-        out.writeByte(0);
+        out.writeByte(1);
         // 4. 1 字节的指令类型
         out.writeByte(message.getMessageType());
         // 5. 4 个字节
@@ -40,7 +40,7 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         // 无意义，对齐填充
         out.writeByte(0xff);
         // 6. 获取内容的字节数组
-        byte[] bytes = SerializerAlgorithm.Java.serialize(message);
+        byte[] bytes = SerializerAlgorithm.Json.serialize(message);
         // 7. 长度
         out.writeInt(bytes.length);
         // 8. 写入内容
@@ -73,6 +73,10 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         SerializerAlgorithm serializerAlgorithm = SerializerAlgorithm.values()[serializerType];
         //找到消息类型
         Class<?> messageClass = Message.getMessageClass(messageType);
+        System.out.println("ssss");
+        System.out.println(messageType);
+        System.out.println(messageClass);
+        System.out.println(serializerType);
         Object message = serializerAlgorithm.deserialize(messageClass, bytes);
         log.debug("{}, {}, {}, {}, {}, {}", magicNum, version, serializerType, messageType, sequenceId, length);
         log.debug("{}", message);

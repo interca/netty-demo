@@ -1,8 +1,9 @@
 package com.dugt.util;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -40,17 +41,21 @@ enum SerializerAlgorithm implements Serializer {
     Json {
         @Override
         public <T> T deserialize(Class<T> clazz, byte[] bytes) {
-            T t = new Gson().fromJson(new String(bytes, StandardCharsets.UTF_8), clazz);
+            Gson gson = new GsonBuilder().registerTypeAdapter(Class.class, new ClassCodec()).create();
+            String json = new String(bytes, StandardCharsets.UTF_8);
+            T t = gson.fromJson(json, clazz);
             return t;
         }
 
         @Override
         public <T> byte[] serialize(T object) {
-            String s = new Gson().toJson(object);
+            Gson gson = new GsonBuilder().registerTypeAdapter(Class.class, new ClassCodec()).create();
+            String s = gson.toJson(object);
             byte[] bytes = s.getBytes(StandardCharsets.UTF_8);
             return bytes;
         }
     };
+
 
     // 需要从协议的字节中得到是哪种序列化算法
     public static SerializerAlgorithm getByInt(int type) {
@@ -61,3 +66,28 @@ enum SerializerAlgorithm implements Serializer {
         return array[type];
     }
 }
+// 针对之前报出：不支持 Class类转json的异常 做处理
+class ClassCodec implements JsonSerializer<Class<?>>, JsonDeserializer<Class<?>> {
+    @Override
+    public Class<?> deserialize(JsonElement json, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+        try {
+            String str = json.getAsString();
+            return Class.forName(str);
+
+        } catch (ClassNotFoundException e) {
+
+            throw new JsonParseException(e);
+        }
+    }
+
+    @Override
+    public JsonElement serialize(Class<?> src, Type type, JsonSerializationContext jsonSerializationContext) {
+
+        // JsonPrimitive 转化基本数据类型
+        return new JsonPrimitive(src.getName());
+    }
+}
+
+
+
+
