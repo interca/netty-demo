@@ -96,7 +96,7 @@ public class ChatClient {
 
                                 WAIT_FOR_LOGIN.countDown(); // 减一 唤醒 线程：system in
                             }
-
+                            System.out.println(msg);
 
                         }
                         // ###################### [ 1 ] ######################

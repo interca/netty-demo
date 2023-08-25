@@ -19,6 +19,7 @@ public class ChatRequestMessageHandler extends SimpleChannelInboundHandler<ChatR
 
         final String to = msg.getTo();
         final Channel channel = SessionFactory.getSession().getChannel(to);
+        System.out.println("ssss");
         // 1. 在线
         if (channel != null){
 

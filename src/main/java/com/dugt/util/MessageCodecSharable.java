@@ -69,7 +69,11 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         int length = in.readInt();
         byte[] bytes = new byte[length];
         in.readBytes(bytes, 0, length);
-        Message message = SerializerAlgorithm.values()[serializerType].deserialize(Message.class, bytes);
+        //找到反序列化算法
+        SerializerAlgorithm serializerAlgorithm = SerializerAlgorithm.values()[serializerType];
+        //找到消息类型
+        Class<?> messageClass = Message.getMessageClass(messageType);
+        Object message = serializerAlgorithm.deserialize(messageClass, bytes);
         log.debug("{}, {}, {}, {}, {}, {}", magicNum, version, serializerType, messageType, sequenceId, length);
         log.debug("{}", message);
         list.add(message);
