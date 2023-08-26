@@ -56,14 +56,14 @@ public class RpcRequestMessageHandler extends SimpleChannelInboundHandler<RpcReq
                 new Object[]{"helloworld!"}
         );
         // 上面对象里 获取【接口类】全限定名
-        final Class<?> interfaceClazz = Class.forName(requestMsg.getInterfaceName());
+      //  final Class<?> interfaceClazz = Class.forName(requestMsg.getInterfaceName());
         // 根据接口类 获取 【接口实现类】
-        final HelloService service = (HelloService) ServiceFactory.getService(interfaceClazz);
+       // final HelloService service = (HelloService) ServiceFactory.getService(interfaceClazz);
         // 根据 方法名和参数类型 确定 【具体方法】
-        final Method method = service.getClass().getMethod(requestMsg.getMethodName(), requestMsg.getParameterTypes());
+      //  final Method method = service.getClass().getMethod(requestMsg.getMethodName(), requestMsg.getParameterTypes());
         // 根据 具体方法 使用代理 【执行方法】
-        final Object invoke = method.invoke( service,requestMsg.getParameterValue());
-        System.out.println(invoke);
+      //  final Object invoke = method.invoke( service,requestMsg.getParameterValue());
+      //  System.out.println(invoke);
 
 
     }

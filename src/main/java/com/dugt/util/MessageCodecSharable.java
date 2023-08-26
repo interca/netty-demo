@@ -73,13 +73,9 @@ public class MessageCodecSharable extends MessageToMessageCodec<ByteBuf, Message
         SerializerAlgorithm serializerAlgorithm = SerializerAlgorithm.values()[serializerType];
         //找到消息类型
         Class<?> messageClass = Message.getMessageClass(messageType);
-        System.out.println("ssss");
-        System.out.println(messageType);
-        System.out.println(messageClass);
-        System.out.println(serializerType);
         Object message = serializerAlgorithm.deserialize(messageClass, bytes);
-        log.debug("{}, {}, {}, {}, {}, {}", magicNum, version, serializerType, messageType, sequenceId, length);
-        log.debug("{}", message);
+        //log.debug("{}, {}, {}, {}, {}, {}", magicNum, version, serializerType, messageType, sequenceId, length);
+        //log.debug("{}", message);
         list.add(message);
     }
 }

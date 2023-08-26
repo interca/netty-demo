@@ -27,7 +27,7 @@ public class RpcResponseMessageHandler extends SimpleChannelInboundHandler<RpcRe
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RpcResponseMessage msg) throws Exception {
         // 拿到 空的 promise
-//        final Promise<Object> promise = PROMISES.get(msg.getSequenceId());
+//       final Promise<Object> promise = PROMISES.get(msg.getSequenceId());
         final Promise<Object> promise = PROMISES.remove(msg.getSequenceId()); // 获取 并销毁值
 
         if (promise != null) {
@@ -44,9 +44,9 @@ public class RpcResponseMessageHandler extends SimpleChannelInboundHandler<RpcRe
 
 
         }
-        log.debug("44444444444444444444444444444444444444444444444444444444444444444444444444");
+        //log.debug("44444444444444444444444444444444444444444444444444444444444444444444444444");
 
-        log.debug("{}", msg);
+       // log.debug("{}", msg);
 
     }
 }
